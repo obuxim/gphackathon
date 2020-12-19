@@ -19,6 +19,7 @@ class CreateBookingsTable extends Migration
             $table->string('room_number');
             $table->date('arrival_date');
             $table->date('checkout_date');
+            $table->string('status');
             $table->timestamps();
         });
     }
