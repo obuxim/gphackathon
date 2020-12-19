@@ -57,7 +57,16 @@ class CrudController extends Controller
     // Update
     public static function update(Request $request, $model, $id)
     {
-        dd('Update', $model, $id, $request);
+        try{
+            $existing = $model::findOrFail($id);
+            foreach ($request->all() as $name => $value){
+                $existing->$name = $value;
+            }
+            $existing->save();
+            return self::generate_response($model, $existing, false, 201);
+        }catch (\Exception $error){
+            return self::generate_response($model, $error->getMessage(), true, 409);
+        }
     }
 
     // Destroy

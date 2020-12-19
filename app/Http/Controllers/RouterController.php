@@ -57,9 +57,18 @@ class RouterController extends Controller
         {
             return CrudController::store($request, $model, $id);
         }
-        else if($request->method() == 'PATCH' && $action == 'update')
+        else if($action == 'update')
         {
-            return CrudController::update($request, $model, $id);
+            if(!$id){
+                return CrudController::generate_response($model, "Please provide an id after /show/", true, 400);
+            }
+            switch ($request->method()){
+                case 'PUT':
+                case 'PATCH':
+                    return CrudController::update($request, $model, $id);
+                default:
+                    return CrudController::generate_response($model, "Please send request as PUT/PATCH method", true, 405);
+            }
         }
         else if($request->method() == 'DELETE' && $action == 'destroy')
         {
