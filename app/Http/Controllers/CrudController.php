@@ -37,7 +37,8 @@ class CrudController extends Controller
         }
         try{
             $entry->save();
-            return response($entry, 201);
+            return self::generate_response($model, $entry, false, 201);
+//            return response($entry, 201);
         }catch (\Exception $error){
             return response($error->getMessage(), 409);
         }
@@ -60,5 +61,13 @@ class CrudController extends Controller
      */
 
     // Generate Common Response
-
+    public static function generate_response($model, $data, $error = false, $status = 200)
+    {
+        $response = new \stdClass();
+        $response->status = $status;
+        $response->error = $error;
+        $response->model = $model;
+        $response->data = is_countable($data) ? $data : [$data];
+        return response()->json($response, $status);
+    }
 }
