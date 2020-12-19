@@ -70,9 +70,15 @@ class RouterController extends Controller
                     return CrudController::generate_response($model, "Please send request as PUT/PATCH method", true, 405);
             }
         }
-        else if($request->method() == 'DELETE' && $action == 'destroy')
+        else if($action == 'destroy')
         {
-            return CrudController::destroy($request, $model, $id);
+            if(!$id){
+                return CrudController::generate_response($model, "Please provide an id after /show/", true, 400);
+            }else if($request->method() == 'DELETE'){
+                return CrudController::destroy($request, $model, $id);
+            }else{
+                return CrudController::generate_response($model, "Please send request as PUT/PATCH method", true, 405);
+            }
         }
         else{
             return CrudController::$action($request, $model, $id);

@@ -72,7 +72,13 @@ class CrudController extends Controller
     // Destroy
     public static function destroy(Request $request, $model, $id)
     {
-        dd('Destroy', $model, $id, $request);
+        try{
+            $existing = $model::findOrFail($id);
+            $existing->delete();
+            return self::generate_response($model, $existing, false, 410);
+        }catch (\Exception $error){
+            return self::generate_response($model, $error->getMessage(), true, 409);
+        }
     }
 
     /*
