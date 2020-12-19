@@ -18,7 +18,7 @@ class CrudController extends Controller
     }
 
     // Index
-    public static function index(Request $request, $model, $id)
+    public static function index(Request $request, $model, $id, $return_id = false)
     {
         try {
             $entry = $model::all();
@@ -29,7 +29,7 @@ class CrudController extends Controller
     }
 
     // Show
-    public static function show(Request $request, $model, $id)
+    public static function show(Request $request, $model, $id, $return_id = false)
     {
         try {
             $entry = $model::findOrFail($id);
@@ -40,7 +40,7 @@ class CrudController extends Controller
     }
 
     // Store
-    public static function store(Request $request, $model, $id)
+    public static function store(Request $request, $model, $id, $return_id = false)
     {
         $entry = new $model();
         foreach ($request->all() as $name => $input){
@@ -55,7 +55,7 @@ class CrudController extends Controller
     }
 
     // Update
-    public static function update(Request $request, $model, $id)
+    public static function update(Request $request, $model, $id, $return_id = false)
     {
         try{
             $existing = $model::findOrFail($id);
@@ -70,7 +70,7 @@ class CrudController extends Controller
     }
 
     // Destroy
-    public static function destroy(Request $request, $model, $id)
+    public static function destroy(Request $request, $model, $id, $return_id = false)
     {
         try{
             $existing = $model::findOrFail($id);
@@ -86,8 +86,11 @@ class CrudController extends Controller
      */
 
     // Generate Common Response
-    public static function generate_response($model, $data, $error = false, $status = 200)
+    public static function generate_response($model, $data, $error = false, $status = 200, $return_id = false)
     {
+        if($return_id){
+            return $data->id;
+        }
         $response = new \stdClass();
         $response->status = $status;
         $response->error = $error;
