@@ -16,3 +16,8 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/{model}/{action}[/{id}]', ['uses' => 'RouterController@serve', 'as' => 'serve']);
+$router->post('/{model}/{action}[/{id}]', ['uses' => 'RouterController@serve', 'as' => 'serve']);
+$router->patch('/{model}/{action}[/{id}]', ['uses' => 'RouterController@serve', 'as' => 'serve']);
+$router->delete('/{model}/{action}[/{id}]', ['uses' => 'RouterController@serve', 'as' => 'serve']);
