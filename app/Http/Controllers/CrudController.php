@@ -19,7 +19,8 @@ class CrudController extends Controller
     // Index
     public static function index(Request $request, $model, $id)
     {
-
+        $entries = $model::all();
+        return self::generate_response($model, $entries);
     }
 
     // Show
@@ -38,9 +39,8 @@ class CrudController extends Controller
         try{
             $entry->save();
             return self::generate_response($model, $entry, false, 201);
-//            return response($entry, 201);
         }catch (\Exception $error){
-            return response($error->getMessage(), 409);
+            return self::generate_response($model, $error->getMessage(), true, 409);
         }
     }
 

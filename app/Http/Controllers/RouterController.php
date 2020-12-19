@@ -23,8 +23,9 @@ class RouterController extends Controller
         $model_path = "App\\Models\\".$model_name;
         if(!class_exists($model_path))
         {
-            return response(404);
-        }else{
+            return CrudController::generate_response($model_path, "The specified model not found! Please check for typos", true, 406);
+        }
+        else {
             $model = $model_path;
         }
         $controller_name_singular = Str::ucfirst(Str::camel($model)).'Controller';
