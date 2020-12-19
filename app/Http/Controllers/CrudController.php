@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\DocBlock\Tags\See;
 
 class CrudController extends Controller
 {
@@ -19,14 +20,23 @@ class CrudController extends Controller
     // Index
     public static function index(Request $request, $model, $id)
     {
-        $entries = $model::all();
-        return self::generate_response($model, $entries);
+        try {
+            $entry = $model::all();
+            return self::generate_response($model, $entry);
+        } catch (\Exception $e) {
+            return self::generate_response($model, "No result with specified ID available!", true, 404);
+        }
     }
 
     // Show
     public static function show(Request $request, $model, $id)
     {
-        dd('Show', $model, $id, $request);
+        try {
+            $entry = $model::findOrFail($id);
+            return self::generate_response($model, $entry);
+        } catch (\Exception $e) {
+            return self::generate_response($model, "No result with specified ID available!", true, 404);
+        }
     }
 
     // Store

@@ -48,6 +48,9 @@ class RouterController extends Controller
         }
         else if($request->method() == 'POST' && $action == 'show')
         {
+            if(!$id){
+                return CrudController::generate_response($model, "Please provide an id after /show/", true, 400);
+            }
             return CrudController::show($request, $model, $id);
         }
         else if($request->method() == 'POST' && $action == 'store')
